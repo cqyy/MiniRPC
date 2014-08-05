@@ -1,6 +1,7 @@
 package com.cqyuanye.ipc;
 
 import com.google.gson.Gson;
+import org.apache.log4j.Logger;
 
 import java.io.*;
 import java.net.InetSocketAddress;
@@ -14,7 +15,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Created by Kali on 14-8-4.
  */
 class Client {
-    //private static final Logger LOG = Logger.getLogger(Client.class);
+    private static final Logger LOG = Logger.getLogger(Client.class);
 
     private final Map<InetSocketAddress,Connection> connections = new HashMap<>();
     private final AtomicInteger callIdGen = new AtomicInteger(0);
@@ -136,7 +137,7 @@ class Client {
                         byte[] objBuf = new byte[objLen];
                         dis.read(objBuf);
                         String objJson = new String(objBuf,"utf-8");
-                        Throwable throwable = gson.fromJson(objJson,clazz);
+                        Throwable throwable = (Throwable) gson.fromJson(objJson,clazz);
                         call.setException(throwable);
                     }else {
                         int len = dis.readInt();
