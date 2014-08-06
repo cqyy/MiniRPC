@@ -2,14 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="eccedc03-462f-41f3-99b3-9afb42b6978f" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__log4j_log4j_1_2_17.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/cqyuanye/ipc/Test.java" />
-      <change type="DELETED" beforePath="E:\Documents\GitHub\MiniRPC\.idea\libraries\Maven__org_apache_logging_log4j_log4j_api_2_0.xml" afterPath="" />
-      <change type="DELETED" beforePath="E:\Documents\GitHub\MiniRPC\.idea\libraries\Maven__org_apache_logging_log4j_log4j_core_2_0.xml" afterPath="" />
+      <change type="DELETED" beforePath="E:\Documents\GitHub\MiniRPC\src\main\java\com\cqyuanye\ipc\Test.java" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/cqyuanye/ipc/Client.java" afterPath="$PROJECT_DIR$/src/main/java/com/cqyuanye/ipc/Client.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MiniRPC.iml" afterPath="$PROJECT_DIR$/MiniRPC.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/cqyuanye/ipc/Server.java" afterPath="$PROJECT_DIR$/src/main/java/com/cqyuanye/ipc/Server.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pom.xml" afterPath="$PROJECT_DIR$/pom.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="MiniRPC.iws" />
@@ -76,31 +71,29 @@
       <file leaf-file-name="Client.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/cqyuanye/ipc/Client.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="1697" max-vertical-offset="4776">
-              <caret line="91" column="28" selection-start-line="91" selection-start-column="20" selection-end-line="91" selection-end-column="28" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+            <state vertical-scroll-proportion="0.0" vertical-offset="2688" max-vertical-offset="4512">
+              <caret line="151" column="17" selection-start-line="151" selection-start-column="17" selection-end-line="151" selection-end-column="17" />
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Server.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="Server.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/cqyuanye/ipc/Server.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="3432" max-vertical-offset="4848">
-              <caret line="185" column="31" selection-start-line="185" selection-start-column="31" selection-end-line="185" selection-end-column="31" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Test.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/cqyuanye/ipc/Test.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.3960396" vertical-offset="0" max-vertical-offset="606">
-              <caret line="10" column="53" selection-start-line="10" selection-start-column="53" selection-end-line="10" selection-end-column="53" />
-              <folding />
+            <state vertical-scroll-proportion="-3.0522876" vertical-offset="4194" max-vertical-offset="5112">
+              <caret line="124" column="34" selection-start-line="124" selection-start-column="34" selection-end-line="124" selection-end-column="34" />
+              <folding>
+                <element signature="docComment;class#Server#0" expanded="false" />
+                <element signature="method#readOneRPC#0;class#Connection#0;class#Server#0" expanded="false" />
+                <element signature="class#Call#0;class#Server#0" expanded="false" />
+                <element signature="method#end#0;class#Listener#0;class#Server#0" expanded="false" />
+                <element signature="class#Reader#0;class#Listener#0;class#Server#0" expanded="false" />
+                <element signature="method#registerChannel#0;class#Reader#0;class#Listener#0;class#Server#0" expanded="false" />
+                <element signature="method#run#0;class#Reader#0;class#Listener#0;class#Server#0" expanded="false" />
+                <element signature="e#6355#6356#0" expanded="true" />
+                <element signature="e#6404#6405#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -108,7 +101,7 @@
       <file leaf-file-name="pom.xml" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pom.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="744">
+            <state vertical-scroll-proportion="0.0" vertical-offset="360" max-vertical-offset="744">
               <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
               <folding />
             </state>
@@ -130,9 +123,9 @@
       <list>
         <option value="$PROJECT_DIR$/src/main/resources/log4j.properties" />
         <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/src/main/java/com/cqyuanye/ipc/Test.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/cqyuanye/ipc/Client.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/cqyuanye/ipc/Server.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/cqyuanye/ipc/Test.java" />
       </list>
     </option>
   </component>
@@ -211,8 +204,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -277,6 +268,8 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -292,7 +285,7 @@
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="OverrideImplement.combined" value="true" />
     <property name="OverrideImplement.overriding.sorted" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../hadoop-1.0.0" />
     <property name="recentsLimit" value="5" />
     <property name="dynamic.classpath" value="false" />
     <property name="FullScreen" value="false" />
@@ -566,11 +559,13 @@
       <workItem from="1407199801730" duration="1893000" />
       <workItem from="1407229602420" duration="2528000" />
       <workItem from="1407235737804" duration="1818000" />
+      <workItem from="1407286321187" duration="634000" />
+      <workItem from="1407302062970" duration="5885000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="12604000" />
+    <option name="totallyTimeSpent" value="19123000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -589,11 +584,10 @@
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32946146" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.195629" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.19989339" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.1988273" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32980973" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -603,6 +597,7 @@
       <window_info id="Maven-2 Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32946146" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -623,7 +618,9 @@
     </option>
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager />
+    <breakpoint-manager>
+      <option name="time" value="1" />
+    </breakpoint-manager>
   </component>
   <component name="antWorkspaceConfiguration">
     <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
@@ -632,11 +629,77 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/main/java/com/cqyuanye/ipc/Client.java">
       <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="5112">
+          <caret line="91" column="28" selection-start-line="91" selection-start-column="20" selection-end-line="91" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/cqyuanye/ipc/Server.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="3569" max-vertical-offset="4848">
+          <caret line="185" column="31" selection-start-line="185" selection-start-column="31" selection-end-line="185" selection-end-column="31" />
+          <folding>
+            <element signature="docComment;class#Server#0" expanded="false" />
+            <element signature="method#readOneRPC#0;class#Connection#0;class#Server#0" expanded="false" />
+            <element signature="class#Call#0;class#Server#0" expanded="false" />
+            <element signature="method#end#0;class#Listener#0;class#Server#0" expanded="false" />
+            <element signature="class#Reader#0;class#Listener#0;class#Server#0" expanded="false" />
+            <element signature="method#registerChannel#0;class#Reader#0;class#Listener#0;class#Server#0" expanded="false" />
+            <element signature="method#run#0;class#Reader#0;class#Listener#0;class#Server#0" expanded="false" />
+            <element signature="e#6355#6356#0" expanded="true" />
+            <element signature="e#6404#6405#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="360" max-vertical-offset="744">
+          <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/cqyuanye/ipc/Client.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="5112">
+          <caret line="91" column="28" selection-start-line="91" selection-start-column="20" selection-end-line="91" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/cqyuanye/ipc/Server.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="4440" max-vertical-offset="5136">
+          <caret line="185" column="31" selection-start-line="185" selection-start-column="31" selection-end-line="185" selection-end-column="31" />
+          <folding>
+            <element signature="docComment;class#Server#0" expanded="false" />
+            <element signature="method#readOneRPC#0;class#Connection#0;class#Server#0" expanded="false" />
+            <element signature="class#Call#0;class#Server#0" expanded="false" />
+            <element signature="method#end#0;class#Listener#0;class#Server#0" expanded="false" />
+            <element signature="class#Reader#0;class#Listener#0;class#Server#0" expanded="false" />
+            <element signature="method#registerChannel#0;class#Reader#0;class#Listener#0;class#Server#0" expanded="false" />
+            <element signature="method#run#0;class#Reader#0;class#Listener#0;class#Server#0" expanded="false" />
+            <element signature="e#6355#6356#0" expanded="true" />
+            <element signature="e#6404#6405#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="360" max-vertical-offset="744">
+          <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/cqyuanye/ipc/Client.java">
+      <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="288" max-vertical-offset="4776">
           <caret line="12" column="0" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -644,7 +707,17 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="2712" max-vertical-offset="3456">
           <caret line="113" column="0" selection-start-line="113" selection-start-column="0" selection-end-line="113" selection-end-column="0" />
-          <folding />
+          <folding>
+            <element signature="docComment;class#Server#0" expanded="false" />
+            <element signature="method#readOneRPC#0;class#Connection#0;class#Server#0" expanded="false" />
+            <element signature="class#Call#0;class#Server#0" expanded="false" />
+            <element signature="method#end#0;class#Listener#0;class#Server#0" expanded="false" />
+            <element signature="class#Reader#0;class#Listener#0;class#Server#0" expanded="false" />
+            <element signature="method#registerChannel#0;class#Reader#0;class#Listener#0;class#Server#0" expanded="false" />
+            <element signature="method#run#0;class#Reader#0;class#Listener#0;class#Server#0" expanded="false" />
+            <element signature="e#6355#6356#0" expanded="true" />
+            <element signature="e#6404#6405#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -660,9 +733,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="5088">
           <caret line="21" column="79" selection-start-line="21" selection-start-column="79" selection-end-line="21" selection-end-column="79" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -670,7 +741,17 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="456" max-vertical-offset="1440">
           <caret line="19" column="0" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
-          <folding />
+          <folding>
+            <element signature="docComment;class#Server#0" expanded="false" />
+            <element signature="method#readOneRPC#0;class#Connection#0;class#Server#0" expanded="false" />
+            <element signature="class#Call#0;class#Server#0" expanded="false" />
+            <element signature="method#end#0;class#Listener#0;class#Server#0" expanded="false" />
+            <element signature="class#Reader#0;class#Listener#0;class#Server#0" expanded="false" />
+            <element signature="method#registerChannel#0;class#Reader#0;class#Listener#0;class#Server#0" expanded="false" />
+            <element signature="method#run#0;class#Reader#0;class#Listener#0;class#Server#0" expanded="false" />
+            <element signature="e#6355#6356#0" expanded="true" />
+            <element signature="e#6404#6405#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -686,9 +767,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="504" max-vertical-offset="5088">
           <caret line="21" column="79" selection-start-line="21" selection-start-column="79" selection-end-line="21" selection-end-column="79" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -696,7 +775,17 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="168" max-vertical-offset="576">
           <caret line="7" column="4" selection-start-line="7" selection-start-column="4" selection-end-line="7" selection-end-column="4" />
-          <folding />
+          <folding>
+            <element signature="docComment;class#Server#0" expanded="false" />
+            <element signature="method#readOneRPC#0;class#Connection#0;class#Server#0" expanded="false" />
+            <element signature="class#Call#0;class#Server#0" expanded="false" />
+            <element signature="method#end#0;class#Listener#0;class#Server#0" expanded="false" />
+            <element signature="class#Reader#0;class#Listener#0;class#Server#0" expanded="false" />
+            <element signature="method#registerChannel#0;class#Reader#0;class#Listener#0;class#Server#0" expanded="false" />
+            <element signature="method#run#0;class#Reader#0;class#Listener#0;class#Server#0" expanded="false" />
+            <element signature="e#6355#6356#0" expanded="true" />
+            <element signature="e#6404#6405#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -712,9 +801,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="2304" max-vertical-offset="4224">
           <caret line="113" column="71" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -730,9 +817,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="72" max-vertical-offset="864">
           <caret line="12" column="60" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -753,27 +838,27 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/cqyuanye/ipc/Client.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1697" max-vertical-offset="4776">
-          <caret line="91" column="28" selection-start-line="91" selection-start-column="20" selection-end-line="91" selection-end-column="28" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state vertical-scroll-proportion="0.0" vertical-offset="2688" max-vertical-offset="4512">
+          <caret line="151" column="17" selection-start-line="151" selection-start-column="17" selection-end-line="151" selection-end-column="17" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/cqyuanye/ipc/Server.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="3432" max-vertical-offset="4848">
-          <caret line="185" column="31" selection-start-line="185" selection-start-column="31" selection-end-line="185" selection-end-column="31" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/cqyuanye/ipc/Test.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3960396" vertical-offset="0" max-vertical-offset="606">
-          <caret line="10" column="53" selection-start-line="10" selection-start-column="53" selection-end-line="10" selection-end-column="53" />
-          <folding />
+        <state vertical-scroll-proportion="-3.0522876" vertical-offset="4194" max-vertical-offset="5112">
+          <caret line="124" column="34" selection-start-line="124" selection-start-column="34" selection-end-line="124" selection-end-column="34" />
+          <folding>
+            <element signature="docComment;class#Server#0" expanded="false" />
+            <element signature="method#readOneRPC#0;class#Connection#0;class#Server#0" expanded="false" />
+            <element signature="class#Call#0;class#Server#0" expanded="false" />
+            <element signature="method#end#0;class#Listener#0;class#Server#0" expanded="false" />
+            <element signature="class#Reader#0;class#Listener#0;class#Server#0" expanded="false" />
+            <element signature="method#registerChannel#0;class#Reader#0;class#Listener#0;class#Server#0" expanded="false" />
+            <element signature="method#run#0;class#Reader#0;class#Listener#0;class#Server#0" expanded="false" />
+            <element signature="e#6355#6356#0" expanded="true" />
+            <element signature="e#6404#6405#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

@@ -127,17 +127,17 @@ class Client {
                     assert call != null:"Call should exists";
                     call.error = !dis.readBoolean();
                     if (call.error){
-                        int clazzLen = dis.readInt();
-                        byte[] nameBuf = new byte[clazzLen];
-                        dis.read(nameBuf);
-                        String clazzName = new String(nameBuf,"utf-8");
-                        Class clazz = Class.forName(clazzName);
+//                        int clazzLen = dis.readInt();
+//                        byte[] nameBuf = new byte[clazzLen];
+//                        dis.read(nameBuf);
+//                        String clazzName = new String(nameBuf,"utf-8");
+//                        Class clazz = Class.forName(clazzName);
 
                         int objLen = dis.readInt();
                         byte[] objBuf = new byte[objLen];
                         dis.read(objBuf);
                         String objJson = new String(objBuf,"utf-8");
-                        Throwable throwable = (Throwable) gson.fromJson(objJson,clazz);
+                        Throwable throwable = (Throwable) gson.fromJson(objJson,Throwable.class);
                         call.setException(throwable);
                     }else {
                         int len = dis.readInt();
@@ -149,8 +149,6 @@ class Client {
                     }
                 } catch (IOException e) {
                     close();
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
                 }finally {
                     call.setDone();
                     calls.remove(call.index);
