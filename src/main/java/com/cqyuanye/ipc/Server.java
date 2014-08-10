@@ -1,16 +1,12 @@
 package com.cqyuanye.ipc;
 
-import com.google.gson.Gson;
-
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.*;
 import java.util.*;
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.BlockingDeque;
+import java.util.concurrent.LinkedBlockingDeque;
 
 
 /**
@@ -18,93 +14,104 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  */
 abstract class Server {
 
-    private final Queue<Call> callQueue = new ConcurrentLinkedQueue<>();
+    private final BlockingDeque<Call> callQueue = new LinkedBlockingDeque<>();
     private final List<Connection> connections = new LinkedList<>();
 
-    private class Connection{
+    private final Listener listener;
+    private final Handler[] handlers;
+    private final Responer responer;
+
+    public Server(InetSocketAddress address) throws IOException {
+        listener = new Listener(address);
+        responer = new Responer();
+        handlers = new Handler[1];
+        for (int i = 0; i < handlers.length; i++) {
+            handlers[i] = new Handler(responer);
+        }
+    }
+
+    public void start() {
+        listener.start();
+        for (Handler handler : handlers) {
+            handler.start();
+        }
+        responer.start();
+    }
+
+    private class Connection {
         private final SocketChannel channel;
         final LinkedList<Call> calls = new LinkedList<>();
 
-        public Connection(SocketChannel channel){
+        public Connection(SocketChannel channel) {
             this.channel = channel;
         }
 
-        public void readOneRPC(){
-            ByteBuffer indexBuf = ByteBuffer.allocate(8);       //int * 2
+        public void readOneRPC() {
+            boolean error = false;
             try {
-                channel.read(indexBuf);
-                if (indexBuf.hasRemaining()){
-                    throw new IOException("Read index error");
+                ByteBuffer indexBuf = ByteBuffer.allocate(8);       //int * 2
+                while (indexBuf.hasRemaining()) {
+                    channel.read(indexBuf);
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
+                indexBuf.flip();
+                int index = indexBuf.getInt();
+                int len = indexBuf.getInt();
+                ByteBuffer buffer = ByteBuffer.allocate(len);
+                while (buffer.hasRemaining()) {
+                    channel.read(buffer);
+                }
+                ByteArrayInputStream inputStream = new ByteArrayInputStream(buffer.array());
+                ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+                Serializable param = (Serializable) objectInputStream.readObject();
+                Call call = new Call(index, param, this);
+                callQueue.put(call);
+            } catch (ClassNotFoundException e1) {
+                e1.printStackTrace();
+                error = true;
+            } catch (IOException e1) {
+                e1.printStackTrace();
+                error = true;
+            } catch (InterruptedException ignored) {
+            }
+            if (error) {
                 try {
                     channel.close();
-                } catch (IOException ignored) {
-                }
-                return;
-            }
-            indexBuf.flip();
-            int index =indexBuf.getInt();
-            int objLen = indexBuf.getInt();
-            ByteBuffer buffer = ByteBuffer.allocate(objLen);
-            while (buffer.hasRemaining()){
-                try {
-                    channel.read(buffer);
                 } catch (IOException e) {
                     e.printStackTrace();
-                    try {
-                        channel.close();
-                    } catch (IOException ignored) {
-                    }
-                    return;
                 }
             }
-            try {
-                String json = new String(buffer.array(),"utf-8");
-                Gson gson = new Gson();
-                Object param = gson.fromJson(json, Object.class);
-                Call call = new Call(index,param,this);
-                callQueue.offer(call);
-                callQueue.notifyAll();
-            } catch (UnsupportedEncodingException e) {
-                throw new Error("Encoding of client does not match with the server");
-            }
         }
-
-
-
     }
 
-    private class Call{
+    private class Call {
         final int index;
-        final Object param;
+        final Serializable param;
         final Connection connection;
         private ByteBuffer response;
 
-        public Call(int index,Object param,Connection connection){
+        public Call(int index, Serializable param, Connection connection) {
             this.index = index;
             this.param = param;
             this.connection = connection;
         }
     }
 
-    private class Listener extends Thread{
+    private class Listener extends Thread {
 
         private volatile boolean shouldRun = true;
 
         private final InetSocketAddress server;
-        private final SocketChannel channel;
+        private final ServerSocketChannel serverSocketChannel;
         private final Selector selector;
         private final Reader[] readers;
 
         private int nextReaderIndex = 0;
 
-        public Listener(Selector selector,InetSocketAddress address) throws IOException {
-            this.selector = selector;
+        public Listener(InetSocketAddress address) throws IOException {
+            this.selector = Selector.open();
             this.server = address;
-            readers = new Reader[10];
-            for (int i = 0; i < readers.length; i++){
+            readers = new Reader[1];
+            for (int i = 0; i < readers.length; i++) {
                 try {
                     readers[i] = new Reader(Selector.open());
                     Thread thread = new Thread(readers[i]);
@@ -114,40 +121,48 @@ abstract class Server {
                     e.printStackTrace();
                 }
             }
-            if (server.isUnresolved()){
+            if (server.isUnresolved()) {
                 throw new IOException("Unknown host of server " + server);
             }
-            channel = SocketChannel.open();
-            channel.bind(server);
-            channel.register(selector,SelectionKey.OP_ACCEPT);
+            serverSocketChannel = ServerSocketChannel.open();
+            serverSocketChannel.bind(server);
+            serverSocketChannel.configureBlocking(false);
+            serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
         }
 
-        private Reader getReader(){
+        private Reader getReader() {
             Reader reader = readers[nextReaderIndex];
-            nextReaderIndex = (nextReaderIndex + 1)%readers.length;
+            nextReaderIndex = (nextReaderIndex + 1) % readers.length;
             return reader;
         }
 
 
-        public void end(){
+        public void end() {
             shouldRun = false;
             selector.wakeup();
         }
 
         @Override
         public void run() {
-            while (shouldRun){
+            while (shouldRun) {
                 try {
                     selector.select(60 * 1000);
                     Set<SelectionKey> keys = selector.selectedKeys();
                     Iterator<SelectionKey> iterator = keys.iterator();
-                    while (iterator.hasNext()){
+                    while (iterator.hasNext()) {
                         SelectionKey key = iterator.next();
-                        if (key.isValid() && key.isAcceptable()){
-                            Connection con = new Connection((SocketChannel) key.channel());
-                            key.attach(con);
+                        if (key.isValid() && key.isAcceptable()) {
+                            SocketChannel channel = ((ServerSocketChannel) key.channel()).accept();
+                            channel.configureBlocking(false);
+                            Connection con = new Connection(channel);
                             connections.add(con);
-                            getReader().registerChannel(key.channel());
+                            Reader reader = getReader();
+                            try {
+                                reader.startAdd();
+                                reader.registerChannel(channel).attach(con);
+                            } finally {
+                                reader.finishedAdd();
+                            }
                         }
                         iterator.remove();
                     }
@@ -157,26 +172,52 @@ abstract class Server {
             }
         }
 
-        private class Reader implements Runnable{
-
+        private class Reader implements Runnable {
+            private volatile boolean adding;
             private final Selector selector;
 
-            public Reader(Selector selector){
+            public Reader(Selector selector) {
                 this.selector = selector;
             }
 
+            public void startAdd() {
+                adding = true;
+                selector.wakeup();
+            }
+
+            public void finishedAdd() {
+                adding = false;
+                synchronized (this) {
+                    this.notifyAll();
+                }
+            }
+
             public SelectionKey registerChannel(SelectableChannel channel) throws ClosedChannelException {
-                return channel.register(selector,SelectionKey.OP_READ);
+                return channel.register(selector, SelectionKey.OP_READ);
             }
 
             @Override
             public void run() {
-                while (true){
+                while (true) {
                     try {
                         selector.select();
-                        selector.selectedKeys().stream()
-                                .filter(SelectionKey::isValid)
-                                .forEach(this::doRead);
+                        if (adding) {
+                            synchronized (this) {
+                                try {
+                                    this.wait();
+                                } catch (InterruptedException ignored) {
+                                }
+                            }
+                        }
+                        Set<SelectionKey> keys = selector.selectedKeys();
+                        Iterator<SelectionKey> iterator = keys.iterator();
+                        while (iterator.hasNext()) {
+                            SelectionKey key = iterator.next();
+                            if (key.isValid() && key.isReadable()) {
+                                doRead(key);
+                            }
+                            iterator.remove();
+                        }
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -184,56 +225,57 @@ abstract class Server {
                 }
             }
 
-            private void doRead(SelectionKey key){
-                Connection connection = (Connection)key.attachment();
+            private void doRead(SelectionKey key) {
+                Connection connection = (Connection) key.attachment();
+                assert connection != null;
                 connection.readOneRPC();
             }
         }
     }
 
-    private class Handler extends Thread{
+    private class Handler extends Thread {
 
         private final Responer responer;
 
-        public Handler(Responer responser){
+        public Handler(Responer responser) {
             this.responer = responser;
         }
 
         @Override
         public void run() {
-            while (true){
-                while (callQueue.isEmpty()){
+            while (true) {
+                Call call = null;
+
+                while (call == null){
                     try {
-                        callQueue.wait();
-                    } catch (InterruptedException e) {
+                        call = callQueue.take();
+                    } catch (InterruptedException ignored) {
                     }
                 }
-                Call call = callQueue.poll();
-                if (call != null){
+
+                if (call != null) {
                     Object value = null;
                     Throwable exception = null;
                     try {
-                         value = call(call);
+                        value = call(call.param);
                     } catch (Throwable throwable) {
                         exception = throwable;
                     }
                     ByteArrayOutputStream os = new ByteArrayOutputStream();
                     DataOutputStream ds = new DataOutputStream(os);
                     try {
-                        Gson gson = new Gson();
                         ds.writeInt(call.index);
-                        if (exception != null){
-                            ds.writeBoolean(true);
-                            String exeStr = gson.toJson(exception);
-                            ds.writeInt(exeStr.length());
-                            ds.write(exeStr.getBytes());
-                        }else {
+                        if (exception != null) {
                             ds.writeBoolean(false);
-                            String valueStr = gson.toJson(value);
-                            ds.writeInt(valueStr.length());
-                            ds.write(valueStr.getBytes());
+                            ObjectOutputStream objectOutputStream = new ObjectOutputStream(os);
+                            objectOutputStream.writeObject(exception);
+                        } else {
+                            ds.writeBoolean(true);
+                            ObjectOutputStream objectOutputStream = new ObjectOutputStream(os);
+                            objectOutputStream.writeObject(value);
                         }
                         call.response = ByteBuffer.wrap(os.toByteArray());
+                        os.close();
                         responer.doResponse(call);
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -243,8 +285,9 @@ abstract class Server {
         }
     }
 
-    private class Responer extends Thread{
+    private class Responer extends Thread {
         private final Selector selector;
+        private volatile boolean adding;
 
         public Responer() throws IOException {
             selector = Selector.open();
@@ -253,15 +296,23 @@ abstract class Server {
 
         @Override
         public void run() {
-            while (true){
+            while (true) {
                 try {
                     selector.select();
+                    while (adding) {
+                        synchronized (this) {
+                            try {
+                                this.wait();
+                            } catch (InterruptedException ignored) {
+                            }
+                        }
+                    }
                     Set<SelectionKey> keySet = selector.selectedKeys();
                     Iterator<SelectionKey> iterator = keySet.iterator();
-                    while (iterator.hasNext()){
+                    while (iterator.hasNext()) {
                         SelectionKey key = iterator.next();
-                        if (key.isValid() && key.isWritable()){
-                            Connection connection = (Connection)key.attachment();
+                        if (key.isValid() && key.isWritable()) {
+                            Connection connection = (Connection) key.attachment();
                             processOneCall(connection);
                         }
                         iterator.remove();
@@ -274,9 +325,9 @@ abstract class Server {
         }
 
         public void doResponse(Call call) throws IOException {
-            synchronized (call.connection){
+            synchronized (call.connection) {
                 call.connection.calls.addLast(call);
-                if (call.connection.calls.size() == 1){
+                if (call.connection.calls.size() == 1) {
                     processOneCall(call.connection);
                 }
             }
@@ -284,16 +335,23 @@ abstract class Server {
 
         private void processOneCall(Connection connection) throws IOException {
             Call call = connection.calls.removeFirst();
-            if (call == null){
+            if (call == null) {
                 return;
             }
             try {
-                connection.channel.write(call.response);
-                if (call.response.hasRemaining()){
+                ByteBuffer data = call.response;
+                int c = connection.channel.write(data);
+                if (data.hasRemaining()) {
                     connection.calls.addFirst(call);
-                    if (connection.channel.keyFor(selector) == null){
-                        SelectionKey key = connection.channel.register(selector,SelectionKey.OP_WRITE);
-                        key.attach(connection);
+                    if (connection.channel.keyFor(selector) == null) {
+                        try {
+                            adding = true;
+                            selector.wakeup();
+                            SelectionKey key = connection.channel.register(selector, SelectionKey.OP_WRITE);
+                            key.attach(connection);
+                        } finally {
+                            adding = false;
+                        }
                     }
                 }
             } catch (IOException e) {
@@ -301,6 +359,7 @@ abstract class Server {
             }
 
         }
+
     }
 
     abstract Object call(Object param) throws Throwable;

@@ -1,6 +1,5 @@
 package com.cqyuanye.ipc;
 
-import com.google.gson.Gson;
 import org.apache.log4j.Logger;
 
 import java.io.*;
@@ -20,8 +19,8 @@ class Client {
     private final Map<InetSocketAddress,Connection> connections = new HashMap<>();
     private final AtomicInteger callIdGen = new AtomicInteger(0);
 
-    public Object call(InetSocketAddress server,Object param) throws Throwable {
-            Call call = new Call(callIdGen.getAndIncrement(),param);
+    public Object call(InetSocketAddress server,Serializable param) throws Throwable {
+        Call call = new Call(callIdGen.getAndIncrement(),param);
         try {
             Connection connection = getConnection(server);
             connection.sendParam(call);
@@ -44,6 +43,7 @@ class Client {
         Connection con = connections.get(address);
         if (con == null){
             con = new Connection(address);
+            con.start();
         }
         connections.put(address,con);
         return con;
@@ -70,7 +70,7 @@ class Client {
             try {
                 socket.connect(server);
             } catch (IOException e) {
-                throw new IOException("Counld not connect to server at " + server);
+                throw new IOException("Could not connect to server at " + server);
             }
 
             try {
@@ -85,16 +85,20 @@ class Client {
 
         public void sendParam(Call call) throws IOException {
             DataOutputStream dos = new DataOutputStream(os);
+
             try {
                 dos.writeInt(call.index);
-                Gson gson = new Gson();
-                String objectStr = gson.toJson(call.param);
-                dos.writeInt(objectStr.length());
-                dos.write(objectStr.getBytes());
+                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
+                objectOutputStream.writeObject(call.param);
+                byte[] data = byteArrayOutputStream.toByteArray();
+                dos.writeInt(data.length);
+                dos.write(data);
+                calls.put(call.index,call);
             } catch (IOException e) {
                 throw e;
             }
-            calls.put(call.index,call);
+
         }
 
 
@@ -109,17 +113,7 @@ class Client {
         @Override
         public void run() {
             DataInputStream dis = new DataInputStream(is);
-            Gson gson = new Gson();
             while (shouldRun){
-                while (calls.isEmpty()){
-                    try {
-                        TimeUnit.SECONDS.sleep(INTERVAL);
-                    } catch (InterruptedException e) {
-                        if (!shouldRun){
-                            break;
-                        }
-                    }
-                }
                 Call call = null;
                 try {
                     int idx = dis.readInt();
@@ -127,29 +121,17 @@ class Client {
                     assert call != null:"Call should exists";
                     call.error = !dis.readBoolean();
                     if (call.error){
-//                        int clazzLen = dis.readInt();
-//                        byte[] nameBuf = new byte[clazzLen];
-//                        dis.read(nameBuf);
-//                        String clazzName = new String(nameBuf,"utf-8");
-//                        Class clazz = Class.forName(clazzName);
-
-                        int objLen = dis.readInt();
-                        byte[] objBuf = new byte[objLen];
-                        dis.read(objBuf);
-                        String objJson = new String(objBuf,"utf-8");
-                        Throwable throwable = (Throwable) gson.fromJson(objJson,Throwable.class);
-                        call.setException(throwable);
+                        ObjectInputStream objectInputStream = new ObjectInputStream(is);
+                        call.setException((Throwable)objectInputStream.readObject());
                     }else {
-                        int len = dis.readInt();
-                        byte[] valBuf = new byte[len];
-                        dis.read(valBuf);
-                        String val = new String(valBuf,"utf-8");
-                        Object value = gson.fromJson(val,Object.class);
-                        call.value(value);
+                        ObjectInputStream objectInputStream = new ObjectInputStream(is);
+                        call.value(objectInputStream.readObject());
                     }
                 } catch (IOException e) {
                     close();
-                }finally {
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                } finally {
                     call.setDone();
                     calls.remove(call.index);
                 }
@@ -162,13 +144,13 @@ class Client {
 
     public static class Call{
         private final int index;
-        private final Object param;
+        private final Serializable param;
         private Object value;
         private volatile boolean done;
         private boolean error;
         private Throwable throwable;
 
-        Call(int index,Object param){
+        Call(int index,Serializable param){
             this.index = index;
             this.param = param;
         }
